@@ -1,53 +1,93 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Table } from 'primeng/table';
+import { PrimeNGConfig } from 'primeng/api';
+import { Customer, Representative } from './domain/customer';
+import { CustomerService } from './service/customer.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./appdemo.scss'],
 })
 export class AppComponent {
+  customers: Customer[];
 
-  title = 'primeng-example';
+  selectedCustomers: Customer[];
 
-  // value1: number = 42723;
+  representatives: Representative[];
 
-  // value2: number = 58151;
+  statuses: any[];
 
-  // value3: number = 2351.35;
+  loading: boolean = true;
 
-  // value4: number = 50;
+  @ViewChild('dt') table: Table;
 
-  // value5: number = 151351;
+  constructor(
+    private customerService: CustomerService,
+    private primengConfig: PrimeNGConfig
+  ) {}
 
-  // value6: number = 115744;
+  ngOnInit() {
+    this.customerService.getCustomersLarge().subscribe((customers) => {
+      this.customers = customers;
+      this.loading = false;
+    });
 
-  // value7: number = 635524;
+    this.representatives = [
+      { name: 'Amy Elsner', image: 'amyelsner.png' },
+      { name: 'Anna Fali', image: 'annafali.png' },
+      { name: 'Asiya Javayant', image: 'asiyajavayant.png' },
+      { name: 'Bernardo Dominic', image: 'bernardodominic.png' },
+      { name: 'Elwin Sharvill', image: 'elwinsharvill.png' },
+      { name: 'Ioni Bowcher', image: 'ionibowcher.png' },
+      { name: 'Ivan Magalhaes', image: 'ivanmagalhaes.png' },
+      { name: 'Onyama Limba', image: 'onyamalimba.png' },
+      { name: 'Stephen Shaw', image: 'stephenshaw.png' },
+      { name: 'XuXue Feng', image: 'xuxuefeng.png' },
+    ];
 
-  // value8: number = 732762;
+    this.statuses = [
+      { label: 'Unqualified', value: 'unqualified' },
+      { label: 'Qualified', value: 'qualified' },
+      { label: 'New', value: 'new' },
+      { label: 'Negotiation', value: 'negotiation' },
+      { label: 'Renewal', value: 'renewal' },
+      { label: 'Proposal', value: 'proposal' },
+    ];
+    this.primengConfig.ripple = true;
+  }
 
-  // value9: number = 1500;
+  onActivityChange(event) {
+    const value = event.target.value;
+    if (value && value.trim().length) {
+      const activity = parseInt(value);
 
-  // value10: number = 2500;
+      if (!isNaN(activity)) {
+        this.table.filter(activity, 'activity', 'gte');
+      }
+    }
+  }
 
-  // value11: number = 4250;
+  onDateSelect(value) {
+    this.table.filter(this.formatDate(value), 'date', 'equals');
+  }
 
-  // value12: number = 5002;
+  formatDate(date) {
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
 
-  // value13: number = 20;
+    if (month < 10) {
+      month = '0' + month;
+    }
 
-  // value14: number = 50;
+    if (day < 10) {
+      day = '0' + day;
+    }
 
-  // value15: number = 10;
+    return date.getFullYear() + '-' + month + '-' + day;
+  }
 
-  // value16: number = 20;
-
-  // value17: number = 20;
-
-  // value18: number = 10.50;
-
-  // value19: number = 25;
-
-  // value20: number = 50;
-  
-
+  onRepresentativeChange(event) {
+    this.table.filter(event.value, 'representative', 'in');
+  }
 }
