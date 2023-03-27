@@ -31,12 +31,101 @@
 <div class="container mt-3">
   <form [formGroup]="form">
     <div class="card flex justify-content-center p-5">
-      <p-calendar
-        formControlName="date"
-        [showButtonBar]="true"
-        [showTime]="true"
-        [showSeconds]="true"
-      ></p-calendar>
+      <div class="row">
+        <div class="col">
+          <div class="mb-3">
+            <input
+              type="text"
+              pInputText
+              formControlName="fullname"
+              placeholder="Full Name"
+              required
+              minlength="5"
+            />
+          </div>
+          <div class="mb-3">
+            <p-inputNumber
+              formControlName="age"
+              mode="decimal"
+              inputId="withoutgrouping"
+              [useGrouping]="false"
+              minlength="2"
+            >
+            </p-inputNumber>
+          </div>
+        </div>
+        <div class="col">
+          <div class="mb-3">
+            <p-cascadeSelect
+              formControlName="selectedCity"
+              [options]="countries"
+              optionLabel="cname"
+              optionGroupLabel="name"
+              [optionGroupChildren]="['states', 'cities']"
+              [style]="{ minWidth: '14rem' }"
+              placeholder="Select a City"
+              required
+            ></p-cascadeSelect>
+          </div>
+          <div class="mb-3">
+            <p-calendar
+              formControlName="date"
+              [showButtonBar]="true"
+              [showTime]="true"
+              [showSeconds]="true"
+            ></p-calendar>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-wrap gap-3 justify-content-center">
+        <p-button
+          [disabled]="form.invalid"
+          label="Submit"
+          (onClick)="saveData()"
+        ></p-button>
+        <p-button
+          label="Reset"
+          (onClick)="reset()"
+          styleClass="p-button-warning ms-2"
+        ></p-button>
+      </div>
     </div>
   </form>
+</div>
+
+<div class="container mt-3 mb-3">
+  <div class="card p-4">
+    <p-table [value]="comments" [tableStyle]="{ 'min-width': '50rem' }">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Full Name</th>
+          <th>Age</th>
+          <th>City</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-comment>
+        <tr>
+          <td>{{ comment.fullname }}</td>
+          <td>{{ comment.age }}</td>
+          <td>{{ comment.selectedCity.cname }}</td>
+          <td>{{ comment.date }}</td>
+          <td>
+            <p-button
+              (onClick)="updateComment(comment)"
+              icon="pi pi-pencil"
+              styleClass="p-button-sm"
+            ></p-button>
+            <p-button
+              (onClick)="deleteComment(comment.id)"
+              icon="pi pi-times"
+              styleClass="p-button-danger p-button-sm ms-2"
+            ></p-button>
+          </td>
+        </tr>
+        <div *ngIf="!comments">No data yet!</div>
+      </ng-template>
+    </p-table>
+  </div>
 </div>

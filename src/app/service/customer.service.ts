@@ -6,13 +6,19 @@ import { Customer } from '../domain/customer';
 export class CustomerService {
   constructor(private http: HttpClient) {}
 
-  getCustomersLarge() {
-    return this.http
-      .get<any>('http://localhost:3000/data')
-      // .toPromise()
-      // .then((res) => <Customer[]>res.data)
-      // .then((data) => {
-      //   return data;
-      // });
+  getCountries() {
+    return this.http.get<any>('http://localhost:3000/Countries');
+  }
+  getComments() {
+    return this.http.get<any>('http://localhost:3000/comments');
+  }
+  addComments(data: any) {
+    return this.http.post<any>('http://localhost:3000/comments', data);
+  }
+  updateComments(id: number, comment: any) {
+    return this.http.put<any>('http://localhost:3000/comments/' + id, comment);
+  }
+  deletComments(id: number) {
+    return this.http.delete<any>('http://localhost:3000/comments/' + id);
   }
 }
