@@ -16,7 +16,7 @@ import { Product } from './../domain/product';
 //       .post(this.BASE_URL + '/posts', Product)
 //       .pipe(catchError(this.errorHandler));
 //   }
-  
+
 //   //get View list of Products
 //   getProductApi(): Observable<any> {
 //     return this.httpClient
@@ -62,12 +62,12 @@ export class ProductService {
     status: string[] = ['OUTOFSTOCK', 'INSTOCK', 'LOWSTOCK'];
 
     productNames: string[] = [
-        "Bamboo Watch", 
-        "Black Watch", 
-        "Blue Band", 
-        "Blue T-Shirt", 
-        "Bracelet", 
-        "Brown Purse", 
+        "Bamboo Watch",
+        "Black Watch",
+        "Blue Band",
+        "Blue T-Shirt",
+        "Bracelet",
+        "Brown Purse",
         "Chakra Bracelet",
         "Galaxy Earrings",
         "Game Controller",
@@ -104,7 +104,7 @@ export class ProductService {
     }
 
     getProducts() {
-        return this.http.get<any>('http://localhost:3000')
+        return this.http.get<any>('assets/products-small.json')
         .toPromise()
         .then(res => <Product[]>res.data)
         .then(data => { return data; });
@@ -136,11 +136,11 @@ export class ProductService {
     generateId() {
         let text = "";
         let possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        
+
         for (var i = 0; i < 5; i++) {
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         }
-        
+
         return text;
     }
 
